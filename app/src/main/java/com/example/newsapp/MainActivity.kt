@@ -15,7 +15,9 @@ import com.example.newsapp.ui.components.OnboardingImagesScreen
 import com.example.newsapp.ui.components.Pager
 import com.example.newsapp.ui.theme.NewsAppTheme
 import com.example.newsapp.ui.uiStates.pages
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

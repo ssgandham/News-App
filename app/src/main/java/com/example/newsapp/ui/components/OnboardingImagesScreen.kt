@@ -20,24 +20,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.newsapp.R
 import com.example.newsapp.ui.theme.NewsAppTheme
+import com.example.newsapp.ui.uiStates.OnboardingEvent
 import com.example.newsapp.ui.uiStates.Page
 import com.example.newsapp.ui.uiStates.pages
 import com.example.newsapp.ui.utils.Constants
+import com.example.newsapp.ui.viewModels.OnboardingViewModel
 
 @Composable
 fun OnboardingImagesScreen(modifier: Modifier = Modifier, pages: List<Page>) {
 
+
     val pagerState = rememberPagerState(pageCount = { Constants.THREE })
     val image = fetchImage(pagerState)
     val page = pages[pagerState.currentPage]
+    val viewModel: OnboardingViewModel = hiltViewModel()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding(),
-//        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -58,7 +62,10 @@ fun OnboardingImagesScreen(modifier: Modifier = Modifier, pages: List<Page>) {
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
         )
         Spacer(modifier = Modifier.weight(1f))
-        Pager(modifier = Modifier, pagerState = pagerState)
+        Pager(
+            modifier = Modifier, pagerState = pagerState,
+            onEvent = viewModel::onEvent,
+        )
     }
 }
 

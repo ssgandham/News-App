@@ -33,11 +33,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.ui.theme.NewsAppTheme
-import com.example.newsapp.ui.utils.Constants
+import com.example.newsapp.ui.uiStates.OnboardingEvent
 import kotlinx.coroutines.launch
 
 @Composable
-fun Pager(modifier: Modifier = Modifier, pagerState: PagerState) {
+fun Pager(modifier: Modifier = Modifier, pagerState: PagerState,  onEvent: suspend (OnboardingEvent) -> Unit) {
 
 
     HorizontalPager(
@@ -55,7 +55,7 @@ fun Pager(modifier: Modifier = Modifier, pagerState: PagerState) {
             }
 
             Spacer(Modifier.height(10.dp))
-            Buttons(pagerState = pagerState)
+            Buttons(pagerState = pagerState, onEvent)
             Spacer(Modifier.height(10.dp))
         }
     }
@@ -79,7 +79,7 @@ fun Indicators(pagerState: PagerState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Buttons(pagerState: PagerState) {
+fun Buttons(pagerState: PagerState, onEvent: suspend (OnboardingEvent) -> Unit) {
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -131,7 +131,9 @@ fun Buttons(pagerState: PagerState) {
                     .background(MaterialTheme.colorScheme.primary)
                     .clip(CircleShape),
                 onClick = {
-
+                    coroutineScope.launch {
+                        onEvent(OnboardingEvent.SaveAppEntry)
+                    }
                 }) {
                 Text("Get Started")
             }
@@ -144,6 +146,6 @@ fun Buttons(pagerState: PagerState) {
 @Composable
 fun PreviewPager() {
     NewsAppTheme {
-        Pager(pagerState = rememberPagerState(initialPage = 2) { 3 })
+        Pager(pagerState = rememberPagerState(initialPage = 2) { 3 }, onEvent = {})
     }
 }
